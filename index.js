@@ -12,8 +12,7 @@ app.use(express.json());
 
 
 
-console.log(process.env.DB_USERNAME);
-console.log(process.env.DB_PASSWORD);
+
 
 const uri =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.cnltwph.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -32,6 +31,16 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const spotsCollection = client.db('spotsDB').collection('spots');
+
+     app.post('/spots',async (req, res) =>{
+        const newSpots = req.body; 
+        console.log(newSpots);
+        const result = await spotsCollection.insertOne(newSpots);
+        res.send(result);
+     })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
