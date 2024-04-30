@@ -47,6 +47,12 @@ async function run() {
         res.send(result);
      })
 
+     app.get('/mySpots/:email', async (req , res) => {
+        console.log(req.params.email);
+        const result = await spotsCollection.find({email:req.params.email}).toArray();
+        res.send(result);
+     })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
